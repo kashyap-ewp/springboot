@@ -1,7 +1,10 @@
 package com.example.department.services.impl;
 
+import com.example.department.models.Certificate;
 import com.example.department.models.Employee;
+import com.example.department.repositories.CertificateRepository;
 import com.example.department.repositories.EmployeeRepository;
+import com.example.department.services.CertificateService;
 import com.example.department.services.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,34 +17,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
-    Logger log = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+public class CertificateServiceImpl implements CertificateService {
+    Logger log = LoggerFactory.getLogger(CertificateServiceImpl.class);
     @Autowired
-    EmployeeRepository employeeRepository;
+    CertificateRepository certificateRepository;
+
     @Override
-    public List<Employee> getEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        employeeRepository.findAll().forEach(e -> employees.add(e));
-        return employees;
+    public List<Certificate> getCertificates() {
+        List<Certificate> certificates = new ArrayList<>();
+        certificateRepository.findAll().forEach(c -> certificates.add(c));
+        return certificates;
     }
 
     @Override
-    public Employee addOrUpdateEmployee(Employee employee) {
+    public Certificate addOrUpdateCertificate(Certificate certificate) {
         try
         {
-            return employeeRepository.save(employee);
+            return certificateRepository.save(certificate);
         }
         catch (DataIntegrityViolationException dive)
         {
             log.info(dive.toString());
-            return new Employee();
+            return new Certificate();
         }
     }
 
     @Override
-    public boolean deleteEmployee(int id) {
+    public boolean deleteCertificate(int id) {
         try{
-            employeeRepository.deleteById(id);
+            certificateRepository.deleteById(id);
             return true;
         }
         catch (EmptyResultDataAccessException erdae)

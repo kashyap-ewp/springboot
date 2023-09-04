@@ -1,7 +1,9 @@
 package com.example.department.controllers;
 
+import com.example.department.models.Certificate;
 import com.example.department.models.Employee;
 import com.example.department.models.ResponseDto;
+import com.example.department.services.CertificateService;
 import com.example.department.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,21 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.function.Function;
 
 @RestController
-@RequestMapping("/employees")
-public class EmployeeController {
+@RequestMapping("/certificates")
+public class CertificateController {
     @Autowired
-    EmployeeService employeeService;
+    CertificateService certificateService;
 
     @PostMapping("/")
-    public ResponseEntity<ResponseDto> addEmployee(@RequestBody Employee employee)
+    public ResponseEntity<ResponseDto> addCertificate(@RequestBody Certificate certificate)
     {
-        Employee e = employeeService.addOrUpdateEmployee(employee);
+        Certificate c = certificateService.addOrUpdateCertificate(certificate);
         ResponseDto res = new ResponseDto();
 
-        if(e.getId() == 0)
+        if(c.getId() == 0)
         {
             res.setStatus(false);
             res.setMessage("Data not Saved, Please enter correct details");
@@ -34,18 +35,18 @@ public class EmployeeController {
         {
             res.setStatus(true);
             res.setMessage("Data Saved");
-            res.setData(e);
+            res.setData(c);
 
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         }
     }
     @GetMapping("/")
-    public ResponseEntity<ResponseDto> getEmployees()
+    public ResponseEntity<ResponseDto> getCertificates()
     {
-        List<Employee> employees = employeeService.getEmployees();
+        List<Certificate> certificates = certificateService.getCertificates();
         ResponseDto res = new ResponseDto();
 
-        if(employees.isEmpty())
+        if(certificates.isEmpty())
         {
             res.setStatus(false);
             res.setMessage("No Data");
@@ -54,30 +55,30 @@ public class EmployeeController {
         }
         else {
             res.setStatus(true);
-            res.setData(employees);
+            res.setData(certificates);
 
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
     }
 
     @PutMapping("/")
-    public ResponseEntity<ResponseDto> updateEmployee(@RequestBody Employee employee)
+    public ResponseEntity<ResponseDto> updateCertificate(@RequestBody Certificate certificate)
     {
-        Employee e = employeeService.addOrUpdateEmployee(employee);
+        Certificate c = certificateService.addOrUpdateCertificate(certificate);
         ResponseDto res = new ResponseDto();
 
-        if(e.getId() == 0)
+        if(c.getId() == 0)
         {
             res.setStatus(false);
-            res.setMessage("Employee not found");
+            res.setMessage("Department not found");
 
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         else
         {
             res.setStatus(true);
-            res.setMessage("Employee Saved");
-            res.setData(e);
+            res.setMessage("Department Saved");
+            res.setData(c);
 
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         }
@@ -85,18 +86,18 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteEmployee(@PathVariable int id)
     {
-        boolean isDeleted = employeeService.deleteEmployee(id);
+        boolean isDeleted = certificateService.deleteCertificate(id);
         ResponseDto res = new ResponseDto();
 
         if(!isDeleted){
             res.setStatus(false);
-            res.setMessage("Department not found");
+            res.setMessage("Certificate not found");
 
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         else {
             res.setStatus(true);
-            res.setMessage("Employee Deleted");
+            res.setMessage("Certificate Deleted");
 
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
