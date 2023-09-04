@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mysql-demo:
+    container_name: mysql-demo
+    image: mysql/mysql-server:8.0.32
+    environment:
+      MYSQL_DATABASE: library
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    restart: always
+
+  app:
+    build: .
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+    working_dir: /app
+    ports:
+      - 8082:8082
+    command: mvn clean spring-boot:run
+    depends_on:
+      - mysql-demo
