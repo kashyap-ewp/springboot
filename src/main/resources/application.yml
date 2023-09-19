@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+debug: true
+
+logging.level.org.springframework.security.oauth2: TRACE
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: ${GITHUB_CLIENT_ID}
+            clientSecret: ${GITHUB_CLIENT_SECRET}
+
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+
+          linkedin:
+            clientId: ${LINKEDIN_CLIENT_ID}
+            clientSecret: ${LINKEDIN_CLIENT_SECRET}
+            authorizationGrantType: authorization_code
+            redirectUri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: r_liteprofile, r_emailaddress
+#            clientName: LinkedIn
+
+        provider:
+
+          linkedin:
+            authorizationUri: https://www.linkedin.com/oauth/v2/authorization
+            tokenUri: https://www.linkedin.com/oauth/v2/accessToken?client_secret=${LINKEDIN_CLIENT_SECRET}
+            userInfoUri: https://api.linkedin.com/v2/me
+            userNameAttribute: id
